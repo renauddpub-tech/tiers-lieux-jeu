@@ -23,7 +23,7 @@ function playPop() {
 }
 
 // ---- Game Duration ----
-const GAME_DURATION = 120; // 2 minutes
+const GAME_DURATION = 45; // 45 secondes
 
 // ---- Regional Networks (colors & branding) ----
 const NETWORKS = {
@@ -186,12 +186,16 @@ function pickRandomLieu() {
         const idx = indices[Math.floor(Math.random() * indices.length)];
         const lieu = TIERS_LIEUX[idx];
 
+        // Skip if already appeared
+        if (gameState.usedLieux.has(idx)) { attempts++; continue; }
+
         // Check it's not too close to any active house
         const tooClose = gameState.activeHouses.some(h =>
             Math.abs(h.x - lieu.x) < 0.04 && Math.abs(h.y - lieu.y) < 0.04
         );
         if (tooClose) { attempts++; continue; }
 
+        gameState.usedLieux.add(idx);
         return lieu;
     }
     return null;
@@ -274,12 +278,12 @@ function spawnHouse() {
 // ---- Difficulty (scaled for 120s) ----
 function getDuration() {
     const progress = (GAME_DURATION - gameState.timeLeft) / GAME_DURATION;
-    return 2800 - (progress * 1500); // starts at 2.8s, ends at 1.3s
+    return 2500 - (progress * 1300); // starts at 2.5s, ends at 1.2s
 }
 
 function getSpawnRate() {
     const progress = (GAME_DURATION - gameState.timeLeft) / GAME_DURATION;
-    return 1200 - (progress * 600); // starts at 1.2s, ends at 0.6s
+    return 1100 - (progress * 500); // starts at 1.1s, ends at 0.6s
 }
 
 // ---- Region Highlighting ----
@@ -361,6 +365,7 @@ function removeHouse(houseData, wasClicked) {
 
 // ---- Timer ----
 function formatTime(seconds) {
+    if (seconds < 60) return '' + seconds;
     const m = Math.floor(seconds / 60);
     const s = seconds % 60;
     return m + ':' + (s < 10 ? '0' : '') + s;
@@ -434,9 +439,9 @@ function endGame() {
     const msgEl = document.getElementById('end-dynamic-msg');
     if (msgEl) {
         const total = typeof TIERS_LIEUX !== 'undefined' ? TIERS_LIEUX.length : '?';
-        if (gameState.score >= 600) msgEl.textContent = 'Incroyable ! Vous êtes un·e expert·e des tiers-lieux !';
-        else if (gameState.score >= 400) msgEl.textContent = 'Très bien joué ! Un vrai connaisseur !';
-        else if (gameState.score >= 200) msgEl.textContent = 'Pas mal ! Continuez à explorer les tiers-lieux !';
+        if (gameState.score >= 300) msgEl.textContent = 'Incroyable ! Vous êtes un·e expert·e des tiers-lieux !';
+        else if (gameState.score >= 200) msgEl.textContent = 'Très bien joué ! Un vrai connaisseur !';
+        else if (gameState.score >= 100) msgEl.textContent = 'Pas mal ! Continuez à explorer les tiers-lieux !';
         else msgEl.textContent = 'Bon début ! Les tiers-lieux n\'attendent que vous !';
     }
 
