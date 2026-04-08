@@ -23,7 +23,7 @@ function playPop() {
 }
 
 // ---- Game Duration ----
-const GAME_DURATION = 45; // 45 secondes
+const GAME_DURATION = 30; // 30 secondes
 
 // ---- Regional Networks (colors & branding) ----
 const NETWORKS = {
@@ -439,9 +439,9 @@ function endGame() {
     const msgEl = document.getElementById('end-dynamic-msg');
     if (msgEl) {
         const total = typeof TIERS_LIEUX !== 'undefined' ? TIERS_LIEUX.length : '?';
-        if (gameState.score >= 300) msgEl.textContent = 'Incroyable ! Vous êtes un·e expert·e des tiers-lieux !';
-        else if (gameState.score >= 200) msgEl.textContent = 'Très bien joué ! Un vrai connaisseur !';
-        else if (gameState.score >= 100) msgEl.textContent = 'Pas mal ! Continuez à explorer les tiers-lieux !';
+        if (gameState.score >= 200) msgEl.textContent = 'Incroyable ! Vous êtes un·e expert·e des tiers-lieux !';
+        else if (gameState.score >= 130) msgEl.textContent = 'Très bien joué ! Un vrai connaisseur !';
+        else if (gameState.score >= 70) msgEl.textContent = 'Pas mal ! Continuez à explorer les tiers-lieux !';
         else msgEl.textContent = 'Bon début ! Les tiers-lieux n\'attendent que vous !';
     }
 
